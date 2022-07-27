@@ -1,0 +1,127 @@
+algoritmo semNome;
+// Síntese
+//  Objetivo: Este é um jogo de adivinhação onde o usuário escolherá o intervalo em que o número será gerado (ex: de 0 a 10)
+//	o programa irá gerar um número aleatório entre esse intervalo e o usuário terá chances ilimitadas para adivinhar o número,
+// 	a quantidade de pontos que usuário ganhará diminui conforme a quantidade de tentativas usadas.
+//  Entrada : Intervalo selecionado pelo jogador, palpite do jogador.
+//  Saída   : Pontos obtidos pelo jogador e palpites errados.
+
+
+principal
+	// Declarações
+	inteiro x, palpite, tentativas, intervalo, pontos, i;
+	inteiro tentativas_vetor[15];
+
+	// Instruções
+
+	//1) Apresentar as regras e perguntar ao usuario qual o intervalo desejado
+	escreval("BEM-VINDO AO JOGO DE ADIVINHAÇÃO DO PASSAGLIA!");
+	escreval("");
+	escreval("REGRAS E COMO JOGAR:");
+	escreval("O jogo gera um numero de 1 a 10 ou 1 a 15 conforme sua escolha.");
+	escreval("Quanto menos tentativas você usa, mais pontos você ganha!");
+	escreval("Abuse da sua intuição e boa sorte :p");
+	escreval("");
+	escreval("");
+	escreval("O número aleatório deve ser gerado em qual intervalo?");
+	escreval("Para um número de 1 a 10, tecle 1 (pontuação máxima: 100)");
+	escreval("Para um número de 1 a 15, tecle 2 (pontuação máxima: 200)");
+
+
+	//2) gerar o numero de acordo com a escolha do usuario
+
+	i = 0;
+	tentativas = 1;
+	leia(intervalo);
+	enquanto (intervalo != 1 e intervalo != 2) faca
+		escreval("OOOPS! NÚMERO INVALIDO, ESCOLHA NOVAMENTE O INTERVALO.");
+		leia(intervalo);
+	fimEnquanto
+	
+		se (intervalo ==1) entao
+			x = aleatorio(10);
+			enquanto (x == 0) faca
+				x=aleatorio(10);
+			fimEnquanto
+		senao
+			se (intervalo == 2) entao
+				x = aleatorio(15);
+				enquanto (x == 0) faca
+				x=aleatorio(15);
+			fimEnquanto
+			fimSe
+		fimSe
+
+
+		escreval("Numero gerado. Dê seu palpite! Para desistir, tecle ESC.");
+
+
+		//3) leitura do palpite do usuario e resultado
+
+
+		leia(palpite);
+		enquanto (palpite != x) faca
+			tentativas_vetor[i] = palpite;
+			escreval("errou, tente novamente");
+			tentativas = tentativas + 1;
+			i = 1+i;
+			leia(palpite);
+
+		fimEnquanto
+
+		escreval ("PARABENS! O NÚMERO GERADO FOI: " , x);
+		escreval("");
+		escreval("VOCE ACERTOU EM ", tentativas, " TENTATIVA(S). PORTANTO, VOCE GANHOU ", calcula_pontos(tentativas, intervalo)," PONTOS!");
+		se (tentativas != 1)entao
+			escreva("OS PALPITES QUE FIZERAM VOCE ERRAR FORAM: ");
+			para (i de 0 ate tentativas - 2 passo 1) faca
+				escreva(tentativas_vetor[i],"; ");
+			fimPara
+		fimSe
+		escreval("");
+		escreval("");
+		escreval("OBRIGADO POR JOGAR :)");
+	
+		fimPrincipal
+
+
+		//funcao que calcula a quantidade de pontos efetuados
+
+		funcao inteiro calcula_pontos(inteiro tentativas, inteiro intervalo)
+			inteiro pontos;
+			// caso o usuario tenha escolhido um intervalo de 1 a 10
+			se (tentativas <= 5 e intervalo == 1) entao
+				pontos = (105 - (tentativas*5));
+			senao
+				se (tentativas > 5 e tentativas <= 10 e intervalo == 1) entao
+					pontos = (80 - (tentativas*8));
+				senao
+					se (tentativas > 10 e intervalo == 1) entao
+						pontos = (75 - (tentativas*10));
+					fimSe
+				fimSe
+			fimSe
+
+			//// caso o usuario tenha escolhido um intervalo de 1 a 15
+
+			se (tentativas <= 5 e intervalo == 2) entao
+				pontos = (203 - (tentativas*3));
+			senao
+				se (tentativas > 5 e tentativas <= 10 e intervalo == 2) entao
+					pontos = (185 - (tentativas*5));
+				senao
+					se (tentativas > 10 e intervalo == 2) entao
+						pontos = (165 - (tentativas*8));
+					fimSe
+				fimSe
+			fimSe
+
+			se (pontos < 0) entao 
+				pontos = 0;
+			fimSe 
+			retorna pontos;
+
+
+
+		fimFuncao
+
